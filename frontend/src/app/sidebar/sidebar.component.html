@@ -1,6 +1,6 @@
 <div class="p-4">
     <div>
-        <h1 class="text-2xl">Select a dataset</h1>
+        <h1 class="text-2xl dark:text-white">Select a dataset</h1>
         <select #datasetSelect (change)="onDatasetChange(datasetSelect.value)" class="w-full">
             <option selected value="">None</option>
             <option *ngFor="let name of datasetNames">{{ name }}</option>
@@ -8,21 +8,21 @@
     </div>
 
     <div *ngIf="metadata" class="mt-4">
-        <h1 class="text-2xl">Dataset Information</h1>
-        <P>Images: {{metadata.number_of_images}}</P>
-        <P>Categories: {{metadata.number_of_categories}}</P>
-        <P>Annotations: {{metadata.number_of_annotations}}</P>
+        <h1 class="text-2xl dark:text-white">Dataset Information</h1>
+        <P class="dark:text-white">Images: {{metadata.number_of_images}}</P>
+        <P class="dark:text-white">Categories: {{metadata.number_of_categories}}</P>
+        <P class="dark:text-white">Annotations: {{metadata.number_of_annotations}}</P>
     </div>
 
     <div *ngIf="metadata" class="mt-4">
-        <h2 class="text-2xl">Filter</h2>
+        <h2 class="text-2xl dark:text-white">Filter</h2>
         <app-multiselect (selectionChangeEvent)="onCategoryChange($event)" [options]="metadata.categories" placeholder="Filter categories"></app-multiselect>
-        <p>Current No. Images: {{ currentNumberOfIndexes }}</p>
+        <p class="dark:text-white">Current No. Images: {{ currentNumberOfIndexes }}</p>
     </div>
 
     <div *ngIf="metadata" class="mt-4 flex flex-col">
-        <h2 class="text-2xl">Vis Options</h2>
-        <div><input type="checkbox" id="showBoundingBoxes" #bboxCbx (change)="toggleBbox(bboxCbx.checked)"><label for="showBoundingBoxes" class="ml-2">Show Bounding Boxes</label></div>
-        <div><input type="checkbox" id="showSegmentations" #annoCbx (change)="toggleAnnotation(annoCbx.checked)" ><label for="showSegmentations" class="ml-2">Show Segmentations</label></div>
+        <h2 class="text-2xl dark:text-white">Vis Options</h2>
+        <div><input type="checkbox" id="showBoundingBoxes" #bboxCbx (change)="toggleBbox(bboxCbx.checked)"><label for="showBoundingBoxes" class="ml-2 dark:text-white">Show Bounding Boxes</label></div>
+        <div><input type="checkbox" id="showSegmentations" #annoCbx (change)="toggleAnnotation(annoCbx.checked)" ><label for="showSegmentations" class="ml-2 dark:text-white">Show Segmentations</label></div>
     </div>
 </div>

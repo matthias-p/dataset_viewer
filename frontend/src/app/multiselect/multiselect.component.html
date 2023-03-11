@@ -1,4 +1,4 @@
-<div class="border border-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 px-4 py-2 relative"
+<div class="border bg-white border-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 px-4 py-2 relative"
     tabindex="0" (click)="toggleOptions()">
     <div *ngIf="selectedItems.length === 0">{{placeholder}}</div>
     <button *ngFor="let item of selectedItems" type="button" (click)="onButtonClick($event, item)"
