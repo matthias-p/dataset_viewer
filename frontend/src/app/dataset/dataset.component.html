@@ -1,0 +1,11 @@
+<div *ngIf="datasetImage" class="mt-4">
+    <div class="flex flex-col items-center">
+        <div>
+            <button type="button" (click)="onPrevClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-black rounded h-full px-2 py-1">Prev Image</button>
+            <input type="number" [(ngModel)]="currentIndex" (change)="getCurrentImage()">
+            <button type="button" (click)="onNextClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-black rounded h-full px-2 py-1">Next Image</button>
+        </div>
+        <app-plot [datasetImage]="datasetImage"></app-plot>
+    </div>
+</div>
+

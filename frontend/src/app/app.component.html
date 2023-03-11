@@ -1,0 +1,20 @@
+<div class="flex flex-col h-full">
+    <nav class="flex justify-between items-center px-4 h-16 bg-white shadow">
+        <a routerLink="">Dataset Viewer</a>
+        <h1 class="text-2xl font-semibold">Angular-Django-Mongo Dataset Viewer</h1>
+        <a routerLink="upload">Dataset Upload</a>
+    </nav>
+    
+    <div class="flex h-full">
+        <div class="overflow-x-hidden bg-white shadow transition-all" [ngClass]="showSidebar ? 'w-80': 'w-0'">
+            <app-sidebar></app-sidebar>
+        </div>
+        
+        <button (click)="toggleSidebar()"><svg [ngClass]="showSidebar ? 'rotate-180': 'rotate-0'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg></button>
+
+        <div class="container mx-auto mt-4">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    
+</div>
