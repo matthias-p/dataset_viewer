@@ -40,13 +40,17 @@ export class DatasetComponent {
   }
 
   onNextClick() {
-    ++this.currentIndex;
-    this.getCurrentImage();
+    if (this.currentIndex < this.datasetIndexes.length - 1) {
+      ++this.currentIndex;
+      this.getCurrentImage();
+    }
   }
 
   onPrevClick() {
-    --this.currentIndex;
-    this.getCurrentImage();
+    if (this.currentIndex > 0) {
+      --this.currentIndex;
+      this.getCurrentImage();    
+    }
   }
 
   getCurrentImage() {

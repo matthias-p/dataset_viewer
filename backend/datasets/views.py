@@ -48,7 +48,10 @@ class DatasetIndexes(views.APIView):
         db = client[kwargs.get("ds_name")]
 
         if "category" in request.query_params:
-            result = db["images"].find({"annotations.category": {"$in": request.query_params.getlist("category")}}, {"_id": 1})
+            if request.query_params.get("filterMode") == "union":
+                result = db["images"].find({"annotations.category": {"$in": request.query_params.getlist("category")}}, {"_id": 1})
+            else:
+                result = db["images"].find({"annotations.category": {"$all": request.query_params.getlist("category")}}, {"_id": 1})
         else:
             result = db["images"].find({}, {"_id": 1})
 

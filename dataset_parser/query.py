@@ -5,15 +5,13 @@ import time
 def main():
     client = MongoClient("localhost", 27017, username="mongoadmin", password="secret")
 
-    db = client["instances_val2017"]
+    db = client["instances_val2017_test"]
 
     
-    t1 = time.time()
-    cursor = db["images"].find({"annotations.category": {"$in": ["broccoli", "boat"]}}, {"_id": 1})
+    cursor = db["images"].find({"annotations.category": {"$all": ["broccoli", "carrot"]}}, {"_id": 1})
     # cursor = db["images"].find({}, {"_id": 1})
     result = [doc for doc in cursor]
-    t2 = time.time()
-    print(t2 - t1)
+    print(len(result))
 
 if __name__ == "__main__":
     main()

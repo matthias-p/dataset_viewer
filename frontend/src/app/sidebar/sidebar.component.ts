@@ -15,7 +15,9 @@ export class SidebarComponent {
 
   metadata: DatasetMetadata | null = null;
   datasetNames: string[] = [];
+  filteredCategories: string[] = [];
   currentNumberOfIndexes = 0;
+  filterMode: string = "union";
 
   constructor (private dataService: DataService, private datasetService: DatasetService) {}
 
@@ -43,6 +45,15 @@ export class SidebarComponent {
   }
 
   onCategoryChange(categories: string[]) {
-    this.dataService.setCategories(categories);
+    this.filteredCategories = categories;
+    this.updateIndexes();
+  }
+
+  onFilterModeChange() {
+    this.updateIndexes();
+  }
+
+  updateIndexes() {
+    this.dataService.setCategories(this.filteredCategories, this.filterMode);
   }
 }

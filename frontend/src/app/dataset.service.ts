@@ -20,9 +20,9 @@ export class DatasetService {
     return this.http.get<DatasetMetadata>(`${this.url}${datasetName}/metadata/`);
   }
 
-  getDatasetIndexes(datasetName: string, category: string[] = []): Observable<DatasetIndexes> {
+  getDatasetIndexes(datasetName: string, category: string[] = [], filterMode: string = "union"): Observable<DatasetIndexes> {
     if (category.length) {
-      return this.http.get<DatasetIndexes>(`${this.url}${datasetName}/indexes/`, {params: { category: category}});
+      return this.http.get<DatasetIndexes>(`${this.url}${datasetName}/indexes/`, {params: { category: category, filterMode: filterMode}});
     }
     return this.http.get<DatasetIndexes>(`${this.url}${datasetName}/indexes/`);
   }

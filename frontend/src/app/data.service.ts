@@ -43,8 +43,8 @@ export class DataService {
     }
   }
 
-  setCategories(categories: string[]) {
-    this.datasetService.getDatasetIndexes(this.dataset, categories).subscribe(
+  setCategories(categories: string[], filterMode: string) {
+    this.datasetService.getDatasetIndexes(this.dataset, categories, filterMode).subscribe(
       indexes => this.indexObs$.next(indexes.indexes)
     )
   }
