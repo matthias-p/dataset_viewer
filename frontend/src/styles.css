@@ -14,6 +14,10 @@ body * {
     @apply transition-all
 }
 
-plotly-plot * {
+/* plotly-plot * {
     @apply transition-width
+} */
+
+.js-plotly-plot .plotly .modebar-group {
+    @apply flex !important
 }

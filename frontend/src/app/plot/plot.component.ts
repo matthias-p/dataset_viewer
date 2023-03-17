@@ -43,7 +43,7 @@ export class PlotComponent {
 
     this.config = {
       doubleClick: "autosize",
-      displayModeBar: false
+      displayModeBar: true
     }
 
     this.showBboxSub = this.dataService.getDrawBboxObs().subscribe(
