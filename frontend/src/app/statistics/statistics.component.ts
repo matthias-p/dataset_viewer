@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 import { DatasetStatistics } from '../dataset-statistics';
 import { DatasetService } from '../dataset.service';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-statistics',
@@ -10,6 +12,58 @@ import { DatasetService } from '../dataset.service';
 })
 export class StatisticsComponent {
   statistics: DatasetStatistics | null = null;
+  revision = 0;
+
+  datasetNameSubscription!: Subscription;
+
+  instancesPerCategoryLayout = {
+    title: "Instances Per Category",
+    xaxis: {
+      categoryorder: "total descending",
+      tickangle: 45
+    },
+    yaxis: {
+      title: "Number of instances"
+    },
+    paper_bgcolor: "rgba(0, 0, 0, 0)",
+    plot_bgcolor: "rgba(0, 0, 0, 0)",
+
+    font: {
+      color: "#888"
+    }
+  }
+
+  categoriesPerImageLayout = {
+    title: "Categories Per Image",
+    xaxis: {
+      title: "Number of categories"
+    },
+    yaxis: {
+      title: "Number of images"
+    },
+    paper_bgcolor: "rgba(0, 0, 0, 0)",
+    plot_bgcolor: "rgba(0, 0, 0, 0)",
+
+    font: {
+      color: "#888"
+    }
+  }
+
+  instancesPerImageLayout = {
+    title: "Instances Per Image",
+    xaxis: {
+      title: "Number of instances"
+    },
+    yaxis: {
+      title: "Number of images"
+    },
+    paper_bgcolor: "rgba(0, 0, 0, 0)",
+    plot_bgcolor: "rgba(0, 0, 0, 0)",
+
+    font: {
+      color: "#888"
+    }
+  }
 
   instanceSizeLayout = {
     title: "Normalized Instance Size",
@@ -21,45 +75,28 @@ export class StatisticsComponent {
     yaxis: {
       title: "Percentag of instances"
     },
+    paper_bgcolor: "rgba(0, 0, 0, 0)",
+    plot_bgcolor: "rgba(0, 0, 0, 0)",
+
+    font: {
+      color: "#888"
+    }
   }
 
-  instancesPerCategoryLayout = {
-    title: "Instances Per Category",
-    xaxis: {
-      title: "Category",
-      categoryorder: "total descending"
-    },
-    yaxis: {
-      title: "Number of instances"
-    },
-  }
-
-  categoriesPerImageLayout = {
-    title: "Categories Per Image",
-    xaxis: {
-      title: "Number of categories"
-    },
-    yaxis: {
-      title: "Number of images"
-    },
-  }
-
-  instancesPerImageLayout = {
-    title: "Instances Per Image",
-    xaxis: {
-      title: "Number of instances"
-    },
-    yaxis: {
-      title: "Number of images"
-    },
-  }
-
-  constructor(private dataService: DataService, private datasetService: DatasetService) {}
+  constructor(private dataService: DataService, private datasetService: DatasetService, private themeService: ThemeService) {}
 
   ngOnInit() {
-    this.dataService.getDatasetNameObs().subscribe(
+    this.datasetNameSubscription = this.dataService.getDatasetNameObs().subscribe(
       dsname => this.onDatasetChange(dsname)
+    );
+
+    this.themeService.getThemeObs().subscribe(
+      theme => this.onThemeChange(theme)
     )
+  }
+
+  ngOnDestroy() {
+    this.datasetNameSubscription.unsubscribe();
   }
 
   onDatasetChange(dsname: string) {
@@ -73,6 +110,23 @@ export class StatisticsComponent {
     } else {
       this.statistics = null;
     }
+  }
+
+  onThemeChange(theme: string) {
+    console.log(theme);
+    if (theme === "dark") {
+      this.instancesPerCategoryLayout.font.color = "#FFF"
+      this.categoriesPerImageLayout.font.color = "#FFF"
+      this.instancesPerImageLayout.font.color = "#FFF"
+      this.instanceSizeLayout.font.color = "#FFF"
+    } else {
+      this.instancesPerCategoryLayout.font.color = "#000"
+      this.categoriesPerImageLayout.font.color = "#000"
+      this.instancesPerImageLayout.font.color = "#000"
+      this.instanceSizeLayout.font.color = "#000"
+    }
+    
+    this.revision++;
   }
 
   getInstanceSizeData() {

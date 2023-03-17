@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
+  private themeObs$: ReplaySubject<string> = new ReplaySubject<string>(1);
 
   constructor() { 
     const theme = localStorage.getItem("theme");
     if (theme && theme === "dark") {
       this.setDarkTheme();
     }
+
+    this.themeObs$.next(this.getTheme());
+  }
+
+  getThemeObs(): Observable<string> {
+    return this.themeObs$.asObservable();
   }
 
   switchTheme() {
@@ -23,6 +31,8 @@ export class ThemeService {
     } else {
       this.setDarkTheme();
     }
+
+    this.themeObs$.next(this.getTheme());
   }
 
   setDarkTheme() {

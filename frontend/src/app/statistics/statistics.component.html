@@ -1,8 +1,12 @@
-<ng-container *ngIf="statistics">
-    <plotly-plot [data]="getInstancesPerCategoryData()" [layout]="instancesPerCategoryLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+<ng-container *ngIf="statistics; else placeholder">
+    <plotly-plot [data]="getInstancesPerCategoryData()" [layout]="instancesPerCategoryLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
     
-    <plotly-plot [data]="getCategoriesPerImageData()" [layout]="categoriesPerImageLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
-    <plotly-plot [data]="getInstancesPerImageData()" [layout]="instancesPerImageLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+    <plotly-plot [data]="getCategoriesPerImageData()" [layout]="categoriesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <plotly-plot [data]="getInstancesPerImageData()" [layout]="instancesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
     
-    <plotly-plot [data]="getInstanceSizeData()" [layout]="instanceSizeLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+    <plotly-plot [data]="getInstanceSizeData()" [layout]="instanceSizeLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
 </ng-container>
+
+<ng-template #placeholder>
+    <h1 class="text-3xl font-bold text-center mt-12 dark:text-white">Select a dataset to see its statistics</h1>
+</ng-template>
