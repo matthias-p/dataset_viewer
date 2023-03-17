@@ -1,5 +1,8 @@
 import json
 import typing
+from collections import defaultdict
+
+import numpy as np
 
 from pathlib import Path
 
@@ -37,6 +40,7 @@ class CocoAnnotation:
         self.ytl = bbox[1]
         self.width = bbox[2]
         self.height = bbox[3]
+        self.area = anno_dict.get("area")
         self.segmentation = anno_dict.get("segmentation")
         self.iscrowd = anno_dict.get("iscrowd")
 
@@ -104,4 +108,35 @@ class CocoDataset:
 
     def export_images(self) -> list[dict]:
         return [image.to_json() for image in self.images]
+    
+    def export_statistics(self):
+        instances_per_image = defaultdict(int)
+        categories_per_image = defaultdict(int)
+        instances_per_category = defaultdict(int)
+        normalized_instance_areas = []
+
+        for image in self.images:
+            categories = set()
+            instances_per_image[str(len(image.annotations))] += 1
+            image_area = image.height * image.width
+
+            for annotation in image.annotations:
+                categories.add(annotation.category.name)
+                instances_per_category[str(annotation.category.name)] += 1
+                normalized_instance_areas.append(annotation.area / image_area)
+            categories_per_image[str(len(categories))] += 1
+        
+        values, bins = np.histogram(normalized_instance_areas, bins=10)
+        bins = np.around(bins, decimals=2)
+        values = values / np.sum(values)
+
+        return {
+            "instances_per_category": [{"key": k, "value": v} for k, v in instances_per_category.items()],
+            "categories_per_image": [{"key": k, "value": v} for k, v in categories_per_image.items()],
+            "instances_per_image": [{"key": k, "value": v} for k, v in instances_per_image.items()],
+            "instance_size": {
+                "bins": bins.tolist(),
+                "values": values.tolist()
+            }
+        }
 

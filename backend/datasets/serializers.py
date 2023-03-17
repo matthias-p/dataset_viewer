@@ -59,6 +59,7 @@ def handleData(tempdir: tempfile.TemporaryDirectory):
     db = client[parser.ds_name]
     db["metadata"].insert_one(parser.export_metadata())
     db["images"].insert_many(parser.export_images())
+    db["statistics"].insert_one(parser.export_statistics())
 
     logger.warning("Extracting images")
     image_dir = [dir for dir in tempdir_path.iterdir() if dir.is_dir()][0]

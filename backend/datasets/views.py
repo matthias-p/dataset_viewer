@@ -43,6 +43,15 @@ class DatasetMetadata(views.APIView):
         return Response(metadata)
     
 
+class DatasetStatistics(views.APIView):
+    def get(self, request, ds_name):
+        db = client[ds_name]
+        statistics = db["statistics"].find_one({}, {"_id": 0})
+
+        return Response(statistics)
+
+    
+
 class DatasetIndexes(views.APIView):
     def get(self, request: Request, **kwargs):
         db = client[kwargs.get("ds_name")]

@@ -11,6 +11,7 @@ export class DataService {
   private indexObs$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   private drawBboxObs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private drawSegmentationObs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private datasetNameObs$: ReplaySubject<string> = new ReplaySubject<string>(1);
   dataset = "";
 
   constructor(private datasetService: DatasetService) { }
@@ -27,9 +28,15 @@ export class DataService {
     return this.indexObs$.asObservable();
   }
 
+  getDatasetNameObs(): Observable<string> {
+    return this.datasetNameObs$.asObservable();
+  }
+
   setDataset(dsname: string) {
     this.dataset = dsname;
+    this.datasetNameObs$.next(dsname);
     if (dsname) {
+      
       this.datasetService.getDatasetMetadata(dsname).subscribe(
         metadata => this.setMetadataObs(metadata)
       );

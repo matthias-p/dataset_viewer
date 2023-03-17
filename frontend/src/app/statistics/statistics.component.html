@@ -1,0 +1,8 @@
+<ng-container *ngIf="statistics">
+    <plotly-plot [data]="getInstancesPerCategoryData()" [layout]="instancesPerCategoryLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+    
+    <plotly-plot [data]="getCategoriesPerImageData()" [layout]="categoriesPerImageLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+    <plotly-plot [data]="getInstancesPerImageData()" [layout]="instancesPerImageLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+    
+    <plotly-plot [data]="getInstanceSizeData()" [layout]="instanceSizeLayout" [updateOnlyWithRevision]="true" [style]="{height: '30%'}"></plotly-plot>
+</ng-container>

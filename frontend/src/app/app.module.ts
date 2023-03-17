@@ -12,6 +12,7 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { PlotComponent } from './plot/plot.component';
 import { UploadComponent } from './upload/upload.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -22,7 +23,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MultiselectComponent,
     PlotComponent,
     UploadComponent,
-    SidebarComponent
+    SidebarComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

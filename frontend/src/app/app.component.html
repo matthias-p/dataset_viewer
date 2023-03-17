@@ -1,11 +1,14 @@
 <div class="flex flex-col h-full">
-    <nav class="flex justify-between items-center px-4 h-16 bg-white shadow dark:bg-slate-800 ring ring-slate-900/5 z-10">
-        <a routerLink="" class="dark:text-white">Dataset Viewer</a>
+    <nav class="flex justify-between items-center !px-4 h-16 bg-white shadow dark:bg-slate-800 ring ring-slate-900/5 z-10 fixed top-0 w-full">
         <h1 class="text-2xl font-semibold dark:text-white">MAD Dataset Viewer</h1>
-        <a routerLink="upload" class="dark:text-white">Dataset Upload</a>
+        <div>
+            <a routerLink="" class="dark:text-white">Dataset Viewer</a>
+            <a routerLink="upload" class="dark:text-white">Dataset Upload</a>
+            <a routerLink="statistics" class="dark:text-white">Dataset Statistics</a>
+        </div>
     </nav>
 
-    <div class="flex h-full">
+    <div class="flex h-full relative mt-16">
         <div class="overflow-x-hidden bg-white shadow dark:bg-slate-800 ring ring-slate-900/5"
             [ngClass]="showSidebar ? 'w-80': 'w-0'">
             <app-sidebar></app-sidebar>

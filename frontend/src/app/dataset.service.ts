@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatasetImage } from './dataset-image';
 import { DatasetIndexes, DatasetMetadata, DatasetNames } from './dataset-metadata';
+import { DatasetStatistics } from './dataset-statistics';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class DatasetService {
 
   getDatasetMetadata(datasetName: string): Observable<DatasetMetadata> {
     return this.http.get<DatasetMetadata>(`${this.url}${datasetName}/metadata/`);
+  }
+
+  getDatasetStatistics(datasetName: string): Observable<DatasetStatistics> {
+    return this.http.get<DatasetStatistics>(`${this.url}${datasetName}/statistics/`);
   }
 
   getDatasetIndexes(datasetName: string, category: string[] = [], filterMode: string = "union"): Observable<DatasetIndexes> {
