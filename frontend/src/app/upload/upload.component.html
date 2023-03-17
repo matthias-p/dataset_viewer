@@ -1,9 +1,13 @@
-<h1 class="text-2xl dark:text-white">Dataset Upload</h1>
-<div class="flex flex-col w-fit">
-    <input #fileinput type="file" class="dark:text-white">
-    <button type="button" (click)="onUploadClick(fileinput.files)" class="border border-gray-500 rounded px-2 py-1 bg-gray-200">Upload</button>
-</div>
+<div class="flex flex-col items-center justify-between w-3/4 mx-auto bg-white dark:bg-slate-800 p-8 h-1/2 mt-16 rounded shadow ring ring-slate-900/5">
+    <h1 class="text-3xl bold text-center dark:text-white">Dataset Upload</h1>
+    <input #fileinput type="file" class="hidden">
 
-<div class="mt-2 w-full h-8 bg-gray-300 rounded">
-    <div class="h-8 bg-blue-500 rounded" [ngStyle]="{'width.%': uploadProgress}"></div>
+    <div class="flex flex-col gap-4">
+        <button (click)="fileinput.click()" class="border border-gray-500 rounded px-2 py-1 bg-gray-50 dark:bg-slate-200">Choose File ...</button>
+        <button type="button" (click)="onUploadClick(fileinput.files)" class="border border-gray-500 rounded px-2 py-1 bg-gray-50 dark:bg-slate-200">Upload</button>    
+    </div>
+    
+    <div class="mt-2 w-full h-8 bg-gray-300 dark:bg-slate-300 rounded">
+        <div class="h-8 bg-indigo-500 dark:bg-indigo-700 rounded" [ngStyle]="{'width.%': uploadProgress}"></div>
+    </div>
 </div>

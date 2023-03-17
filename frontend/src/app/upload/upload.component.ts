@@ -8,7 +8,7 @@ import { DatasetService } from '../dataset.service';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent {
-  uploadProgress = 0
+  uploadProgress = 0;
 
   constructor(private datasetService: DatasetService) {}
 
