@@ -11,13 +11,16 @@ import { ThemeService } from '../theme.service';
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent {
-  statistics: DatasetStatistics | null = null;
   datasetName = "";
-  filterMode = "";
+  categories: string[] = [];
+  filterMode: string = "union";
 
+  statistics: DatasetStatistics | null = null;
   revision = 0;
 
   datasetNameSubscription!: Subscription;
+  categoriesSubscription!: Subscription;
+  filterModeSubscription!: Subscription;
   themeSubscription!: Subscription;
 
   instancesPerCategoryLayout = {
@@ -91,17 +94,23 @@ export class StatisticsComponent {
 
   ngOnInit() {
     this.datasetNameSubscription = this.dataService.getDatasetNameObs().subscribe(
-      dsname => this.onDatasetChange(dsname)
-    );
+      datasetName => {
+        this.datasetName = datasetName;
+        this.onChange();
+      }
+    )
 
-    this.dataService.getCategoryObs().subscribe(
-      categories => this.onCategoryChange(categories)
-    );
+    this.categoriesSubscription = this.dataService.getCategoryObs().subscribe(
+      categories => {
+        this.categories = categories;
+        this.onChange();
+      }
+    )
 
-    this.dataService.getFilterModeObs().subscribe(
+    this.filterModeSubscription = this.dataService.getFilterModeObs().subscribe(
       filterMode => {
         this.filterMode = filterMode;
-        console.log(this.filterMode);
+        this.onChange();
       }
     )
 
@@ -112,14 +121,17 @@ export class StatisticsComponent {
 
   ngOnDestroy() {
     this.datasetNameSubscription.unsubscribe();
+    this.categoriesSubscription.unsubscribe();
+    this.filterModeSubscription.unsubscribe();
     this.themeSubscription.unsubscribe();
   }
 
-  onDatasetChange(dsname: string) {
-    if (dsname) {
-      this.datasetService.getDatasetStatistics(dsname).subscribe(
+  onChange() {
+    if (this.datasetName) {
+      this.datasetService.getDatasetStatistics(this.datasetName, this.categories, this.filterMode).subscribe(
         statistics => {
           this.statistics = statistics;
+          this.revision++;
         }
       )
     } else {
@@ -127,17 +139,7 @@ export class StatisticsComponent {
     }
   }
 
-  onCategoryChange(categories: string[]) {
-    this.datasetService.getDatasetStatistics(this.dataService.dataset, categories, this.filterMode).subscribe(
-      statistics => {
-        this.statistics = statistics;
-        this.revision++;
-      }
-    )
-  }
-
   onThemeChange(theme: string) {
-    console.log(theme);
     if (theme === "dark") {
       this.instancesPerCategoryLayout.font.color = "#FFF"
       this.categoriesPerImageLayout.font.color = "#FFF"

@@ -1,17 +1,17 @@
-<div class="border bg-white border-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 px-4 py-2 relative"
+<div class="border bg-white border-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 px-4 py-2 relative group"
     tabindex="0" (click)="toggleOptions()">
-    <div *ngIf="selectedItems.length === 0">{{placeholder}}</div>
+    <div *ngIf="selectedItems.length === 0" class="py-1">{{placeholder}}</div>
     <button *ngFor="let item of selectedItems" type="button" (click)="onButtonClick($event, item)"
-        class="bg-blue-500 py-1 px-2 mr-2 rounded text-sm">{{item}}</button>
+        class="bg-blue-500 py-1 px-2 mr-2 mt-1 rounded text-sm h-1/2">{{item}}</button>
 
-    <svg class="absolute right-1 top-2" [ngClass]="showOptions ? 'rotate-180': 'rotate-0'"
-        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666666"
+    <svg class="absolute right-1 top-3 stroke-gray-400" [ngClass]="showOptions ? 'rotate-180': 'rotate-0'"
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 9l6 6 6-6" />
     </svg>
 
     <div (click)="onOptionClick($event)"
-        class="absolute border border-black px-4 py-2 top-11 left-0 w-full bg-white max-h-64 overflow-y-auto z-10"
+        class="absolute px-4 py-2 top-full left-0 right-0 border border-gray-500 bg-white max-h-64 overflow-y-auto z-10 group-focus:border-blue-500 group-focus:ring-1 group-focus:ring-blue-500"
         [ngClass]="showOptions ? 'block': 'hidden'">
         <div class="flex flex-col">
             <input #search (input)="onSearchInput(search.value)" type="text" placeholder="Search..." class="w-full">

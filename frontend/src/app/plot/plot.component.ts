@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PlotComponent {
   @Input() datasetImage!: DatasetImage;
+  @Input() datasetName!: string;
   showBoundingBoxes!: boolean;
   showSegmentations!: boolean;
 
@@ -44,7 +45,7 @@ export class PlotComponent {
 
     this.config = {
       doubleClick: "autosize",
-      displayModeBar: true
+      displayModeBar: false
     }
 
     this.showBboxSub = this.dataService.getDrawBboxObs().subscribe(
@@ -89,7 +90,7 @@ export class PlotComponent {
     this.layout.images[0].sizex = this.datasetImage.width;
     this.layout.images[0].y = this.datasetImage.height;
     this.layout.images[0].sizey = this.datasetImage.height;
-    this.layout.images[0].source = `${environment.apiUrl}${this.dataService.dataset}/images/${this.datasetImage!.name}/`;
+    this.layout.images[0].source = `${environment.apiUrl}${this.datasetName}/images/${this.datasetImage!.name}/`;
 
     this.data = [];
 

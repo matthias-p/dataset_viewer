@@ -10,30 +10,31 @@ import { DatasetService } from '../dataset.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
-  private metadataSub!: Subscription;
-  private indexesSub!: Subscription;
-
   metadata: DatasetMetadata | null = null;
   datasetNames: string[] = [];
   filteredCategories: string[] = [];
-  currentNumberOfIndexes = 0;
   filterMode: string = "union";
 
   constructor (private dataService: DataService, private datasetService: DatasetService) {}
 
   ngOnInit() {
     this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
-    this.metadataSub = this.dataService.getMetadataObs().subscribe(metadata => this.metadata = metadata);
-    this.indexesSub = this.dataService.getIndexObs().subscribe(indexes => this.currentNumberOfIndexes = indexes.length);
-  }
-
-  ngOnDestroy() {
-    this.metadataSub.unsubscribe();
-    this.indexesSub.unsubscribe();
   }
 
   onDatasetChange(name: string) {
     this.dataService.setDataset(name);
+    this.dataService.setCategories([]);
+    this.dataService.setFilterMode("union");
+    this.dataService.setDrawBboxObs(false);
+    this.dataService.setDrawSegmentationObs(false);
+
+    if (name) {
+      this.datasetService.getDatasetMetadata(name).subscribe(
+        metadata => this.metadata = metadata
+      );
+    } else {
+      this.metadata = null;
+    }
   }
 
   toggleBbox(value: boolean) {
@@ -45,16 +46,10 @@ export class SidebarComponent {
   }
 
   onCategoryChange(categories: string[]) {
-    this.filteredCategories = categories;
-    this.updateIndexes();
+    this.dataService.setCategories(categories);
   }
 
   onFilterModeChange() {
     this.dataService.setFilterMode(this.filterMode);
-    this.updateIndexes();
-  }
-
-  updateIndexes() {
-    this.dataService.setCategories(this.filteredCategories, this.filterMode);
   }
 }
