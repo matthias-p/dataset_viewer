@@ -12,9 +12,13 @@ import { ThemeService } from '../theme.service';
 })
 export class StatisticsComponent {
   statistics: DatasetStatistics | null = null;
+  datasetName = "";
+  filterMode = "";
+
   revision = 0;
 
   datasetNameSubscription!: Subscription;
+  themeSubscription!: Subscription;
 
   instancesPerCategoryLayout = {
     title: "Instances Per Category",
@@ -90,13 +94,25 @@ export class StatisticsComponent {
       dsname => this.onDatasetChange(dsname)
     );
 
-    this.themeService.getThemeObs().subscribe(
+    this.dataService.getCategoryObs().subscribe(
+      categories => this.onCategoryChange(categories)
+    );
+
+    this.dataService.getFilterModeObs().subscribe(
+      filterMode => {
+        this.filterMode = filterMode;
+        console.log(this.filterMode);
+      }
+    )
+
+    this.themeSubscription = this.themeService.getThemeObs().subscribe(
       theme => this.onThemeChange(theme)
     )
   }
 
   ngOnDestroy() {
     this.datasetNameSubscription.unsubscribe();
+    this.themeSubscription.unsubscribe();
   }
 
   onDatasetChange(dsname: string) {
@@ -104,12 +120,20 @@ export class StatisticsComponent {
       this.datasetService.getDatasetStatistics(dsname).subscribe(
         statistics => {
           this.statistics = statistics;
-          console.log(this.statistics);
         }
       )
     } else {
       this.statistics = null;
     }
+  }
+
+  onCategoryChange(categories: string[]) {
+    this.datasetService.getDatasetStatistics(this.dataService.dataset, categories, this.filterMode).subscribe(
+      statistics => {
+        this.statistics = statistics;
+        this.revision++;
+      }
+    )
   }
 
   onThemeChange(theme: string) {

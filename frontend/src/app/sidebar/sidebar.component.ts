@@ -50,6 +50,7 @@ export class SidebarComponent {
   }
 
   onFilterModeChange() {
+    this.dataService.setFilterMode(this.filterMode);
     this.updateIndexes();
   }
 

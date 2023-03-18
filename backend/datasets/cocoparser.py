@@ -56,6 +56,7 @@ class CocoAnnotation:
             "ytl": self.ytl,
             "width": self.width,
             "height": self.height,
+            "area": self.area,
             "segmentation": self.segmentation,
             "iscrowd": self.iscrowd,
         }

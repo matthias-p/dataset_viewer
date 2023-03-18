@@ -9,6 +9,8 @@ import { DatasetService } from './dataset.service';
 export class DataService {
   private metadataObs$: BehaviorSubject<DatasetMetadata | null> = new BehaviorSubject<DatasetMetadata | null>(null);
   private indexObs$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  private categoryObs$: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  private filerModeObs$: BehaviorSubject<string> = new BehaviorSubject<string>("union");
   private drawBboxObs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private drawSegmentationObs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private datasetNameObs$: ReplaySubject<string> = new ReplaySubject<string>(1);
@@ -51,9 +53,23 @@ export class DataService {
   }
 
   setCategories(categories: string[], filterMode: string) {
+    this.categoryObs$.next(categories);
+    this.filerModeObs$.next(filterMode);
     this.datasetService.getDatasetIndexes(this.dataset, categories, filterMode).subscribe(
       indexes => this.indexObs$.next(indexes.indexes)
     )
+  }
+
+  getCategoryObs(): Observable<string[]> {
+    return this.categoryObs$.asObservable();
+  }
+
+  setFilterMode(mode: string) {
+    this.filerModeObs$.next(mode);
+  }
+
+  getFilterModeObs(): Observable<string> {
+    return this.filerModeObs$.asObservable();
   }
 
   getDrawBboxObs(): Observable<boolean> {

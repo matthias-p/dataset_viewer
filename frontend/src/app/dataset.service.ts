@@ -21,7 +21,10 @@ export class DatasetService {
     return this.http.get<DatasetMetadata>(`${environment.apiUrl}${datasetName}/metadata/`);
   }
 
-  getDatasetStatistics(datasetName: string): Observable<DatasetStatistics> {
+  getDatasetStatistics(datasetName: string, category: string[] = [], filterMode: string = "union"): Observable<DatasetStatistics> {
+    if (category.length) {
+      return this.http.get<DatasetStatistics>(`${environment.apiUrl}${datasetName}/statistics/`, {params: { category: category, filterMode: filterMode}});
+    }
     return this.http.get<DatasetStatistics>(`${environment.apiUrl}${datasetName}/statistics/`);
   }
 
