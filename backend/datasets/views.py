@@ -91,10 +91,3 @@ class ImageData(View):
             return FileResponse(open(image_path, "rb"))
         else:
             return HttpResponseNotFound()
-        
-
-class Testview(View):
-    def get(self, request):
-        filepath = Path(__file__).parent / "bridge.jpg"
-        fp = open(filepath, "rb")
-        return FileResponse(fp)
