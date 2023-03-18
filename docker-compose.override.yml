@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend  
+    expose:
+      - 8000
+    volumes:
+      - ./images:/backend/images
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "9000:9000"
+    networks:
+      - backend
+    volumes:
+      - ./nginx_conf:/etc/nginx/conf.d:ro
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4200:4200"
+  

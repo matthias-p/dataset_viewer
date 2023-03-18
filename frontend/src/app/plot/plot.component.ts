@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 import { DatasetImage } from '../dataset-image';
 import { PlotlyConfig, PlotlyData, PlotlyLayout } from '../plotly-graph';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-plot',
@@ -88,7 +89,7 @@ export class PlotComponent {
     this.layout.images[0].sizex = this.datasetImage.width;
     this.layout.images[0].y = this.datasetImage.height;
     this.layout.images[0].sizey = this.datasetImage.height;
-    this.layout.images[0].source = `http://localhost:9000/api/datasets/${this.dataService.dataset}/images/${this.datasetImage!.name}/`;
+    this.layout.images[0].source = `${environment.apiUrl}${this.dataService.dataset}/images/${this.datasetImage!.name}/`;
 
     this.data = [];
 

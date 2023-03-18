@@ -1,32 +1,32 @@
 services:
   backend:
-    build: ./backend
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./backend:/backend
-      - ./images:/backend/images
-    ports:
-      - "8000:8000"
+    # build: ./backend
+    # command: python manage.py runserver 0.0.0.0:8000
+    # volumes:
+    #   - ./backend:/backend
+    #   - ./images:/backend/images
+    # ports:
+    #   - "8000:8000"
     networks:
       - backend
 
-  nginx:
-    image: nginx:latest
-    ports:
-      - "9000:9000"
-    networks:
-      - backend
-    volumes:
-      - ./images:/www/data/images
-      - ./nginx_conf:/etc/nginx/conf.d:ro
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "9000:9000"
+  #   networks:
+  #     - backend
+  #   volumes:
+  #     - ./images:/www/data/images
+  #     - ./nginx_conf:/etc/nginx/conf.d:ro
 
   frontend:
-    build: ./frontend
-    command: ng serve --host 0.0.0.0
-    volumes:
-      - ./frontend:/frontend
-    ports:
-      - "4200:4200"
+    # build: ./frontend
+    # command: ng serve --host 0.0.0.0
+    # volumes:
+    #   - ./frontend:/frontend
+    # ports:
+    #   - "4200:4200"
     networks:
       - backend
 
