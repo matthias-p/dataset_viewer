@@ -1,10 +1,11 @@
 <ng-container *ngIf="statistics; else placeholder">
-    <plotly-plot [data]="getInstancesPerCategoryData()" [layout]="instancesPerCategoryLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <plotly-plot [data]="getInstancesPerCategoryData()" className="rounded ring ring-slate-900/5" [layout]="instancesPerCategoryLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
     
-    <plotly-plot [data]="getCategoriesPerImageData()" [layout]="categoriesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
-    <plotly-plot [data]="getInstancesPerImageData()" [layout]="instancesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <plotly-plot [data]="getCategoriesPerImageData()" className="rounded ring ring-slate-900/5 mt-4" [layout]="categoriesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <plotly-plot [data]="getInstancesPerImageData()" className="rounded ring ring-slate-900/5 mt-4" [layout]="instancesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
     
-    <plotly-plot [data]="getInstanceSizeData()" [layout]="instanceSizeLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <plotly-plot [data]="getInstanceSizeData()" className="rounded ring ring-slate-900/5 mt-4" [layout]="instanceSizeLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <div class="h-4"></div>
 </ng-container>
 
 <ng-template #placeholder>

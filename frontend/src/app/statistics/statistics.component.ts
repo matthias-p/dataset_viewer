@@ -32,8 +32,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     yaxis: {
       title: "Number of instances"
     },
-    paper_bgcolor: "rgba(0, 0, 0, 0)",
-    plot_bgcolor: "rgba(0, 0, 0, 0)",
+    paper_bgcolor: "rgba(255, 255, 255, 1)",
+    plot_bgcolor: "rgba(255, 255, 255, 1)",
 
     font: {
       color: "#888"
@@ -142,14 +142,36 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   onThemeChange(theme: string) {
     if (theme === "dark") {
       this.instancesPerCategoryLayout.font.color = "#FFF"
+      this.instancesPerCategoryLayout.plot_bgcolor = "rgba(0,0,0,0)"
+      this.instancesPerCategoryLayout.paper_bgcolor = "rgba(0,0,0,0)"
+
       this.categoriesPerImageLayout.font.color = "#FFF"
+      this.categoriesPerImageLayout.plot_bgcolor = "rgba(0,0,0,0)"
+      this.categoriesPerImageLayout.paper_bgcolor = "rgba(0,0,0,0)"
+
       this.instancesPerImageLayout.font.color = "#FFF"
+      this.instancesPerImageLayout.plot_bgcolor = "rgba(0,0,0,0)"
+      this.instancesPerImageLayout.paper_bgcolor = "rgba(0,0,0,0)"
+
       this.instanceSizeLayout.font.color = "#FFF"
+      this.instanceSizeLayout.plot_bgcolor = "rgba(0,0,0,0)"
+      this.instanceSizeLayout.paper_bgcolor = "rgba(0,0,0,0)"
     } else {
       this.instancesPerCategoryLayout.font.color = "#000"
+      this.instancesPerCategoryLayout.plot_bgcolor = "#FFF"
+      this.instancesPerCategoryLayout.paper_bgcolor = "#FFF"
+
       this.categoriesPerImageLayout.font.color = "#000"
+      this.categoriesPerImageLayout.plot_bgcolor = "#FFF"
+      this.categoriesPerImageLayout.paper_bgcolor = "#FFF"
+
       this.instancesPerImageLayout.font.color = "#000"
+      this.instancesPerImageLayout.plot_bgcolor = "#FFF"
+      this.instancesPerImageLayout.paper_bgcolor = "#FFF"
+
       this.instanceSizeLayout.font.color = "#000"
+      this.instanceSizeLayout.plot_bgcolor = "#FFF"
+      this.instanceSizeLayout.paper_bgcolor = "#FFF"
     }
     
     this.revision++;

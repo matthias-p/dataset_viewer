@@ -1,11 +1,11 @@
 <div *ngIf="datasetImage; else placeholder" class="mt-4">
-    <div class="flex flex-col items-center justify-center">
+    <div class="flex flex-col items-center justify-center py-4 rounded bg-green-white ring ring-slate-900/5">
         <div class="w-full flex items-center relative">
-            <!-- <div></div> -->
+
             <div class="mx-auto">
-                <button type="button" (click)="onPrevClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-black rounded h-[42px] px-2 py-1">Prev Image</button>
+                <button type="button" (click)="onPrevClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-gray-500 rounded h-[42px] px-2 py-1">Prev Image</button>
                 <input type="number" [(ngModel)]="currentIndex" (change)="getCurrentImage()" [min]="1" [max]="datasetIndexes.length" class="w-56 rounded">
-                <button type="button" (click)="onNextClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-black rounded h-[42px] px-2 py-1">Next Image</button>
+                <button type="button" (click)="onNextClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-gray-500 rounded h-[42px] px-2 py-1">Next Image</button>
             </div>
             
             <div class="dark:text-white text-right w-40 absolute right-10">{{ currentIndex }} / {{ datasetIndexes.length }}</div>
