@@ -39,6 +39,10 @@ export class DatasetService {
     return this.http.get<DatasetImage>(`${environment.apiUrl}${datasetName}/`, {params: {index: index}});
   }
 
+  deleteDataset(datasetName: string) {
+    return this.http.delete(`${environment.apiUrl}${datasetName}/`, {responseType: "text"});
+  }
+
   uploadDataset(file: File): Observable<HttpEvent<any>> {
     const formdata = new FormData();
     formdata.append("dataset", file);

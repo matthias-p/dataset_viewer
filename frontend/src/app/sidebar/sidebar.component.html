@@ -1,42 +1,52 @@
-<div class="p-4">
+<div class="p-4 pt-20 h-full relative flex flex-col justify-between">
     <div>
         <h1 class="text-2xl dark:text-white">Select a dataset</h1>
-        <select #datasetSelect (change)="onDatasetChange(datasetSelect.value)" class="w-full">
+        <select (change)="onDatasetChange()" [(ngModel)]="selectedDataset" class="w-full">
             <option selected value="">None</option>
-            <option *ngFor="let name of datasetNames">{{ name }}</option>
+            <option *ngFor="let name of datasetNames" [value]="name">{{ name }}</option>
         </select>
+
+        <ng-container *ngIf="metadata">
+            <div class="mt-4">
+                <h1 class="text-2xl dark:text-white">Dataset Information</h1>
+                <P class="dark:text-white">Images: {{metadata.number_of_images}}</P>
+                <P class="dark:text-white">Categories: {{metadata.number_of_categories}}</P>
+                <P class="dark:text-white">Annotations: {{metadata.number_of_annotations}}</P>
+            </div>
+    
+            <div class="mt-4">
+                <h2 class="text-2xl dark:text-white">Filter</h2>
+                <app-multiselect (selectionChangeEvent)="onCategoryChange($event)" [options]="metadata.categories"
+                    placeholder="Filter categories"></app-multiselect>
+    
+                <div class="flex items-center mt-2">
+                    <input type="radio" id="union" name="filter_mode" [(ngModel)]="filterMode"
+                        (change)="onFilterModeChange()" value="union">
+                    <label for="union" class="dark:text-white ml-2">Union</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="radio" id="intersection" name="filter_mode" [(ngModel)]="filterMode"
+                        (change)="onFilterModeChange()" value="intersection">
+                    <label for="intersection" class="dark:text-white ml-2">Intersection</label>
+                </div>
+    
+            </div>
+    
+            <div class="mt-4 flex flex-col">
+                <h2 class="text-2xl dark:text-white">Vis Options</h2>
+                <div><input type="checkbox" id="showBoundingBoxes" #bboxCbx (change)="toggleBbox(bboxCbx.checked)"><label
+                        for="showBoundingBoxes" class="ml-2 dark:text-white">Show Bounding Boxes</label></div>
+                <div><input type="checkbox" id="showSegmentations" #annoCbx
+                        (change)="toggleAnnotation(annoCbx.checked)"><label for="showSegmentations"
+                        class="ml-2 dark:text-white">Show Segmentations</label></div>
+            </div>
+        </ng-container>
     </div>
 
-    <div *ngIf="metadata" class="mt-4">
-        <h1 class="text-2xl dark:text-white">Dataset Information</h1>
-        <P class="dark:text-white">Images: {{metadata.number_of_images}}</P>
-        <P class="dark:text-white">Categories: {{metadata.number_of_categories}}</P>
-        <P class="dark:text-white">Annotations: {{metadata.number_of_annotations}}</P>
-    </div>
-
-    <div *ngIf="metadata" class="mt-4">
-        <h2 class="text-2xl dark:text-white">Filter</h2>
-        <app-multiselect (selectionChangeEvent)="onCategoryChange($event)" [options]="metadata.categories"
-            placeholder="Filter categories"></app-multiselect>
-
-        <div class="flex items-center mt-2">
-            <input type="radio" id="union" name="filter_mode" [(ngModel)]="filterMode" (change)="onFilterModeChange()"
-                value="union">
-            <label for="union" class="dark:text-white ml-2">Union</label>
+    <ng-container *ngIf="metadata">
+        <div class=" w-full">
+            <button (click)="onDelete()" class="bg-red-700 hover:bg-red-800 text-white px-2 py-2 rounded w-full">Delete dataset</button>
         </div>
-        <div class="flex items-center">
-            <input type="radio" id="intersection" name="filter_mode" [(ngModel)]="filterMode"
-                (change)="onFilterModeChange()" value="intersection">
-            <label for="intersection" class="dark:text-white ml-2">Intersection</label>
-        </div>
+    </ng-container>
 
-    </div>
-
-    <div *ngIf="metadata" class="mt-4 flex flex-col">
-        <h2 class="text-2xl dark:text-white">Vis Options</h2>
-        <div><input type="checkbox" id="showBoundingBoxes" #bboxCbx (change)="toggleBbox(bboxCbx.checked)"><label
-                for="showBoundingBoxes" class="ml-2 dark:text-white">Show Bounding Boxes</label></div>
-        <div><input type="checkbox" id="showSegmentations" #annoCbx (change)="toggleAnnotation(annoCbx.checked)"><label
-                for="showSegmentations" class="ml-2 dark:text-white">Show Segmentations</label></div>
-    </div>
 </div>

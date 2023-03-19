@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { take } from 'rxjs';
 import { DataService } from '../data.service';
 import { DatasetMetadata } from '../dataset-metadata';
 import { DatasetService } from '../dataset.service';
@@ -13,6 +14,7 @@ export class SidebarComponent implements OnInit {
   datasetNames: string[] = [];
   filteredCategories: string[] = [];
   filterMode = "union";
+  selectedDataset = ""
 
   constructor (private dataService: DataService, private datasetService: DatasetService) {}
 
@@ -20,15 +22,15 @@ export class SidebarComponent implements OnInit {
     this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
   }
 
-  onDatasetChange(name: string) {
-    this.dataService.setDataset(name);
+  onDatasetChange() {
+    this.dataService.setDataset(this.selectedDataset);
     this.dataService.setCategories([]);
     this.dataService.setFilterMode("union");
     this.dataService.setDrawBboxObs(false);
     this.dataService.setDrawSegmentationObs(false);
 
-    if (name) {
-      this.datasetService.getDatasetMetadata(name).subscribe(
+    if (this.selectedDataset) {
+      this.datasetService.getDatasetMetadata(this.selectedDataset).subscribe(
         metadata => this.metadata = metadata
       );
     } else {
@@ -50,5 +52,13 @@ export class SidebarComponent implements OnInit {
 
   onFilterModeChange() {
     this.dataService.setFilterMode(this.filterMode);
+  }
+
+  onDelete() {
+    this.datasetService.deleteDataset(this.selectedDataset).subscribe(() => {
+      this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
+      this.selectedDataset = "";
+      this.onDatasetChange();
+    });
   }
 }

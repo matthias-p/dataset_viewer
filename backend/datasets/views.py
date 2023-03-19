@@ -1,16 +1,15 @@
-from pathlib import Path
+import shutil
 from collections import defaultdict
+from pathlib import Path
 
 import numpy as np
-
+from django.conf import settings
+from django.http import FileResponse, HttpResponseNotFound
+from django.views import View
 from pymongo import MongoClient
 from rest_framework import status, views
 from rest_framework.request import Request
 from rest_framework.response import Response
-
-from django.views import View
-from django.http import FileResponse, HttpResponseNotFound
-from django.conf import settings
 
 from . import serializers
 
@@ -126,6 +125,13 @@ class ImageDetail(views.APIView):
             return Response(image)
         else:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
+        
+    def delete(self, request, ds_name):
+        client.drop_database(ds_name)
+        image_dir = settings.BASE_DIR / "images" / ds_name
+        shutil.rmtree(str(image_dir))
+
+        return Response("ok")
         
 
 class ImageData(View):
