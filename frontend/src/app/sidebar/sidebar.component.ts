@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { DatasetMetadata } from '../dataset-metadata';
 import { DatasetService } from '../dataset.service';
@@ -9,11 +8,11 @@ import { DatasetService } from '../dataset.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   metadata: DatasetMetadata | null = null;
   datasetNames: string[] = [];
   filteredCategories: string[] = [];
-  filterMode: string = "union";
+  filterMode = "union";
 
   constructor (private dataService: DataService, private datasetService: DatasetService) {}
 

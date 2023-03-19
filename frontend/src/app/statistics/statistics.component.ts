@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 import { DatasetStatistics } from '../dataset-statistics';
@@ -10,10 +10,10 @@ import { ThemeService } from '../theme.service';
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })
-export class StatisticsComponent {
+export class StatisticsComponent implements OnInit, OnDestroy {
   datasetName = "";
   categories: string[] = [];
-  filterMode: string = "union";
+  filterMode = "union";
 
   statistics: DatasetStatistics | null = null;
   revision = 0;

@@ -7,7 +7,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 })
 export class MultiselectComponent {
   @Input() options: string[] = []
-  @Input() placeholder: string = "Select...";
+  @Input() placeholder = "Select...";
   @Output() selectionChangeEvent = new EventEmitter<string[]>();
 
   showOptions = false;

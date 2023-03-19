@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import { filter, Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 import { DatasetImage } from '../dataset-image';
-import { DatasetMetadata } from '../dataset-metadata';
 import { DatasetService } from '../dataset.service';
 
 @Component({
@@ -10,10 +9,10 @@ import { DatasetService } from '../dataset.service';
   templateUrl: './dataset.component.html',
   styleUrls: ['./dataset.component.css']
 })
-export class DatasetComponent {
+export class DatasetComponent implements OnInit, OnDestroy {
   datasetName = "";
   categories: string[] = [];
-  filterMode: string = "union";
+  filterMode = "union";
 
   datasetIndexes: number[] = []
   currentIndex = 1;
@@ -35,7 +34,7 @@ export class DatasetComponent {
 
     this.categoriesSubscription = this.dataService.getCategoryObs().subscribe(
       categories => {
-        this.categories = categories;
+        this.categories = categories.slice();
         this.onChange();
       }
     )

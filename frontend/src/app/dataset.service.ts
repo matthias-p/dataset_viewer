@@ -21,14 +21,14 @@ export class DatasetService {
     return this.http.get<DatasetMetadata>(`${environment.apiUrl}${datasetName}/metadata/`);
   }
 
-  getDatasetStatistics(datasetName: string, category: string[] = [], filterMode: string = "union"): Observable<DatasetStatistics> {
+  getDatasetStatistics(datasetName: string, category: string[] = [], filterMode = "union"): Observable<DatasetStatistics> {
     if (category.length) {
       return this.http.get<DatasetStatistics>(`${environment.apiUrl}${datasetName}/statistics/`, {params: { category: category, filterMode: filterMode}});
     }
     return this.http.get<DatasetStatistics>(`${environment.apiUrl}${datasetName}/statistics/`);
   }
 
-  getDatasetIndexes(datasetName: string, category: string[] = [], filterMode: string = "union"): Observable<DatasetIndexes> {
+  getDatasetIndexes(datasetName: string, category: string[] = [], filterMode = "union"): Observable<DatasetIndexes> {
     if (category.length) {
       return this.http.get<DatasetIndexes>(`${environment.apiUrl}${datasetName}/indexes/`, {params: { category: category, filterMode: filterMode}});
     }

@@ -5,13 +5,11 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  private datasetNameObs$: BehaviorSubject<string> = new BehaviorSubject<string>("");
-  private categoryObs$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  private filerModeObs$: BehaviorSubject<string> = new BehaviorSubject<string>("union");
+  private datasetNameObs$: ReplaySubject<string> = new ReplaySubject<string>(1);
+  private categoryObs$: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  private filerModeObs$: ReplaySubject<string> = new ReplaySubject<string>(1);
   private drawBboxObs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private drawSegmentationObs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  constructor() { }
 
   getDatasetNameObs(): Observable<string> {
     return this.datasetNameObs$.asObservable();

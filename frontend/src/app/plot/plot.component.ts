@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
 import { DatasetImage } from '../dataset-image';
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './plot.component.html',
   styleUrls: ['./plot.component.css']
 })
-export class PlotComponent {
+export class PlotComponent implements OnInit, OnChanges {
   @Input() datasetImage!: DatasetImage;
   @Input() datasetName!: string;
   showBoundingBoxes!: boolean;
@@ -105,7 +105,7 @@ export class PlotComponent {
 
     if (this.showBoundingBoxes) {
       this.datasetImage.annotations.forEach(annotation => {
-        let y = this.datasetImage!.height - annotation.ytl;
+        const y = this.datasetImage!.height - annotation.ytl;
         this.data.push({
           x: [annotation.xtl, annotation.xtl + annotation.width, annotation.xtl + annotation.width, annotation.xtl, annotation.xtl],
           y: [y, y, y - annotation.height, y - annotation.height, y],
