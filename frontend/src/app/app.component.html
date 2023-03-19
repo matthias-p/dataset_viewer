@@ -1,45 +1,5 @@
 <div class="flex flex-col h-full">
-    <nav
-        class="flex justify-between items-center !px-4 h-16 bg-white shadow dark:bg-slate-800 ring ring-slate-900/5 z-10 fixed top-0 w-full">
-        <div class="flex items-center gap-4">
-            <button (click)="toggleSidebar()" class="p-2 rounded-full hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
-                <svg class="stroke-black dark:stroke-white transition-none" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            <h1 class="text-2xl font-semibold dark:text-white">MAD Dataset Viewer</h1>
-        </div>
-
-        <div class="flex gap-8">
-            <a routerLink="" class="p-2 rounded-full hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-black dark:stroke-white transition-none" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </a>
-            <a routerLink="statistics" class="p-2 rounded-full hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-black dark:stroke-white transition-none" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-            </a>
-            <a routerLink="upload" class="p-2 rounded-full hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-black dark:stroke-white transition-none" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 8l-5-5-5 5M12 4.2v10.3" />
-                </svg>
-            </a>
-        </div>
-    </nav>
+    <app-navbar (toggleSidebarEvent)="toggleSidebar($event)"></app-navbar>
 
     <div class="flex h-full mt-16 relative">
         <div class="overflow-x-hidden bg-white shadow dark:bg-slate-800 ring ring-slate-900/5 fixed h-full"
@@ -47,14 +7,13 @@
             <app-sidebar></app-sidebar>
         </div>
 
-
-
         <div class="container mx-auto mt-4" [ngClass]="showSidebar ? 'ml-[22rem]': 'ml-auto'">
             <router-outlet></router-outlet>
         </div>
     </div>
 
-    <button (click)="toggleTheme()" class="fixed bottom-4 right-4 rounded-full p-2 hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
+    <button (click)="toggleTheme()"
+        class="fixed bottom-4 right-4 rounded-full p-2 hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
         <svg *ngIf="theme === 'light'; else sunIcon" class="h-8 w-8 stroke-violet-700"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">

@@ -13,6 +13,7 @@ import { PlotComponent } from './plot/plot.component';
 import { UploadComponent } from './upload/upload.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -24,7 +25,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PlotComponent,
     UploadComponent,
     SidebarComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

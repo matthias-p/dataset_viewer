@@ -16,24 +16,27 @@
 
     <div *ngIf="metadata" class="mt-4">
         <h2 class="text-2xl dark:text-white">Filter</h2>
-        <app-multiselect (selectionChangeEvent)="onCategoryChange($event)" [options]="metadata.categories" placeholder="Filter categories"></app-multiselect>
+        <app-multiselect (selectionChangeEvent)="onCategoryChange($event)" [options]="metadata.categories"
+            placeholder="Filter categories"></app-multiselect>
 
-        <!-- Union Intersection -->
         <div class="flex items-center mt-2">
-            <input type="radio" id="union" name="filter_mode" [(ngModel)]="filterMode" (change)="onFilterModeChange()" value="union">
-            <label for="union" class="dark:text-white ml-2">Union</label>        
+            <input type="radio" id="union" name="filter_mode" [(ngModel)]="filterMode" (change)="onFilterModeChange()"
+                value="union">
+            <label for="union" class="dark:text-white ml-2">Union</label>
         </div>
         <div class="flex items-center">
-            <input type="radio" id="intersection" name="filter_mode" [(ngModel)]="filterMode" (change)="onFilterModeChange()" value="intersection">
-            <label for="intersection" class="dark:text-white ml-2">Intersection</label>    
+            <input type="radio" id="intersection" name="filter_mode" [(ngModel)]="filterMode"
+                (change)="onFilterModeChange()" value="intersection">
+            <label for="intersection" class="dark:text-white ml-2">Intersection</label>
         </div>
-        
-        <!-- <p class="dark:text-white">Current No. Images: {{ currentNumberOfIndexes }}</p> -->
+
     </div>
 
     <div *ngIf="metadata" class="mt-4 flex flex-col">
         <h2 class="text-2xl dark:text-white">Vis Options</h2>
-        <div><input type="checkbox" id="showBoundingBoxes" #bboxCbx (change)="toggleBbox(bboxCbx.checked)"><label for="showBoundingBoxes" class="ml-2 dark:text-white">Show Bounding Boxes</label></div>
-        <div><input type="checkbox" id="showSegmentations" #annoCbx (change)="toggleAnnotation(annoCbx.checked)" ><label for="showSegmentations" class="ml-2 dark:text-white">Show Segmentations</label></div>
+        <div><input type="checkbox" id="showBoundingBoxes" #bboxCbx (change)="toggleBbox(bboxCbx.checked)"><label
+                for="showBoundingBoxes" class="ml-2 dark:text-white">Show Bounding Boxes</label></div>
+        <div><input type="checkbox" id="showSegmentations" #annoCbx (change)="toggleAnnotation(annoCbx.checked)"><label
+                for="showSegmentations" class="ml-2 dark:text-white">Show Segmentations</label></div>
     </div>
 </div>

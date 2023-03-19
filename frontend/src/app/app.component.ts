@@ -18,8 +18,8 @@ export class AppComponent implements OnInit {
     this.theme = this.themeService.getTheme();
   }
 
-  toggleSidebar() {
-    this.showSidebar = !this.showSidebar;
+  toggleSidebar(showSidebar: boolean) {
+    this.showSidebar = showSidebar;
   }
 
   toggleTheme() {
