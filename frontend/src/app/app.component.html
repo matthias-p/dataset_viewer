@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <button (click)="toggleTheme()" class="fixed bottom-4 right-4">
+    <button (click)="toggleTheme()" class="fixed bottom-4 right-4 rounded-full p-2 hover:bg-gray-50 hover:ring-1 hover:ring-slate-900/10 dark:hover:bg-slate-500/50">
         <svg *ngIf="theme === 'light'; else sunIcon" class="h-8 w-8 stroke-violet-700"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
