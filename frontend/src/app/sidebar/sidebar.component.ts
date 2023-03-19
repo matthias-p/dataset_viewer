@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { DatasetMetadata } from '../dataset-metadata';
 import { DatasetService } from '../dataset.service';
