@@ -1,12 +1,9 @@
-<div *ngIf="datasetImage; else placeholder" class="mt-4">
+<ng-container *ngIf="datasetImage; else placeholder">
     <div class="flex flex-col items-center justify-center py-4 rounded bg-green-white ring ring-slate-900/5">
-        <div class="w-full flex items-center relative">
-
-            <div class="mx-auto">
-                <button type="button" (click)="onPrevClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-gray-500 rounded h-[42px] px-2 py-1">Prev Image</button>
-                <input type="number" [(ngModel)]="currentIndex" (change)="getCurrentImage()" [min]="1" [max]="datasetIndexes.length" class="w-56 rounded">
-                <button type="button" (click)="onNextClick()" class="mx-2 bg-gray-200 hover:bg-gray-300 border border-gray-500 rounded h-[42px] px-2 py-1">Next Image</button>
-            </div>
+        <div class="w-full flex mx-auto relative justify-center items-center">
+            <button type="button" (click)="onPrevClick()" class="mx-2 py-2.5 px-4 text-sm rounded bg-white border hover:text-blue-700 border-gray-300 dark:bg-slate-800 dark:text-white dark:border-slate-800 dark:hover:bg-slate-700">Prev Image</button>
+            <input type="text" [(ngModel)]="currentIndex" (change)="getCurrentImage()" [min]="1" [max]="datasetIndexes.length" class="w-56 rounded dark:text-white dark:bg-slate-800">
+            <button type="button" (click)="onNextClick()" class="mx-2 py-2.5 px-4 text-sm rounded bg-white border hover:text-blue-700 border-gray-300 dark:bg-slate-800 dark:text-white dark:border-slate-800 dark:hover:bg-slate-700">Next Image</button>
             
             <div class="dark:text-white text-right w-40 absolute right-10">{{ currentIndex }} / {{ datasetIndexes.length }}</div>
         </div>
@@ -15,7 +12,7 @@
             <app-plot [datasetImage]="datasetImage" [datasetName]="datasetName"></app-plot>
         </div>
     </div>
-</div>
+</ng-container>
 
 <ng-template #placeholder>
     <h1 class="text-3xl font-bold text-center mt-12 dark:text-white">Select a dataset to browse it</h1>

@@ -1,7 +1,7 @@
 <div class="p-4 pt-20 h-full relative flex flex-col justify-between">
     <div>
         <h1 class="text-2xl dark:text-white">Select a dataset</h1>
-        <select (change)="onDatasetChange()" [(ngModel)]="selectedDataset" class="w-full">
+        <select (change)="onDatasetChange()" [(ngModel)]="selectedDataset" class="w-full rounded dark:bg-slate-900 dark:text-white dark:border-slate-900 ">
             <option selected value="">None</option>
             <option *ngFor="let name of datasetNames" [value]="name">{{ name }}</option>
         </select>
@@ -45,7 +45,7 @@
 
     <ng-container *ngIf="metadata">
         <div class=" w-full">
-            <button (click)="onDelete()" class="bg-red-700 hover:bg-red-800 text-white px-2 py-2 rounded w-full">Delete dataset</button>
+            <button (click)="onDelete()" class="bg-red-700 hover:bg-red-800 text-white px-2 py-2 rounded w-full dark:bg-red-600 dark:hover:bg-red-700">Delete dataset</button>
         </div>
     </ng-container>
 
