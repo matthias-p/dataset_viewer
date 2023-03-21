@@ -14,6 +14,7 @@ import { UploadComponent } from './upload/upload.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { DragAndDropDirective } from './drag-and-drop.directive';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -26,7 +27,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     UploadComponent,
     SidebarComponent,
     StatisticsComponent,
-    NavbarComponent
+    NavbarComponent,
+    DragAndDropDirective
   ],
   imports: [
     BrowserModule,

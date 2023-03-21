@@ -1,13 +1,19 @@
-<div class="flex flex-col items-center justify-between w-3/4 mx-auto bg-white dark:bg-slate-800 p-8 h-1/2 mt-16 rounded shadow ring ring-slate-900/5">
+<div (click)="fileinput.click()" appDragAndDrop (fileDropped)="onFilesChange($event)"
+    class="flex flex-col items-center justify-between w-3/4 mx-auto bg-white dark:bg-slate-800 p-8 h-1/2 mt-16 rounded shadow ring ring-slate-900/5 hover:ring-blue-700 dark:hover:ring-blue-600">
     <h1 class="text-3xl bold text-center dark:text-white">Dataset Upload</h1>
-    <input #fileinput type="file" class="hidden">
+    <input #fileinput (change)="onFilesChange(fileinput.files)" type="file" class="hidden">
 
-    <div class="flex flex-col gap-4">
-        <button (click)="fileinput.click()" class="border border-gray-500 rounded px-2 py-1 bg-gray-50 dark:bg-slate-200">Choose File ...</button>
-        <button type="button" (click)="onUploadClick(fileinput.files)" class="border border-gray-500 rounded px-2 py-1 bg-gray-50 dark:bg-slate-200">Upload</button>    
+    <div class="flex flex-col w-full justify-center items-center">
+        <p class="dark:text-white text-sm">Click or drop file to upload</p>
+        <p *ngIf="file" class="dark:text-white">Selected File: {{ file.name }}</p>
     </div>
-    
-    <div class="mt-2 w-full h-8 bg-gray-300 dark:bg-slate-300 rounded">
-        <div class="h-8 bg-indigo-500 dark:bg-indigo-700 rounded" [ngStyle]="{'width.%': uploadProgress}"></div>
+
+    <div class="w-full flex flex-col justify-center">
+        <button type="button" (click)="onUploadClick($event)"
+            class="mx-auto w-1/4 py-2.5 px-4 text-sm rounded bg-white border hover:text-blue-700 border-gray-300 dark:bg-slate-800 dark:text-white  dark:hover:bg-slate-700">Upload</button>
+        <div class="mt-2 w-full h-8 bg-gray-300 dark:bg-slate-300 rounded">
+            <div class="h-8 bg-blue-700 dark:bg-blue-600 rounded" [ngStyle]="{'width.%': uploadProgress}"></div>
+        </div>
     </div>
+
 </div>
