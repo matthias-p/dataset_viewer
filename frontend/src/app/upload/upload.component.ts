@@ -1,6 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { DatasetService } from '../dataset.service';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-upload',
@@ -11,7 +12,7 @@ export class UploadComponent {
   uploadProgress = 0;
   file: File | null = null;
 
-  constructor(private datasetService: DatasetService) {}
+  constructor(private datasetService: DatasetService, private notificationService: NotificationService) {}
 
   onUploadClick(event: MouseEvent) {
     event.stopPropagation();
@@ -24,12 +25,9 @@ export class UploadComponent {
               if (event.total) {
                 this.uploadProgress = Math.round(event.loaded / event.total * 100);
               }
-              else {
-                console.log(event.loaded);
-              }
               break;
             case HttpEventType.Response:
-              console.log(event.body);
+              this.notificationService.pushNotification("Upload complete: parsing data", "success")
               break;
           }
         },

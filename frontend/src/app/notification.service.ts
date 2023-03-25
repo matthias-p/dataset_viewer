@@ -36,7 +36,6 @@ export class NotificationService {
     this.notifications.push(notification);
 
     setTimeout(() => {
-      console.log("remove");
       this.notifications.splice(this.notifications.indexOf(notification), 1);
     }, 5000);
   }
