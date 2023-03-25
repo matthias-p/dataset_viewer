@@ -14,7 +14,7 @@
         <div *ngFor="let option of options" (click)="onOptionClick(option)"
             class="flex items-center text-sm hover:cursor-pointer py-1 px-2 mr-2 mt-1 rounded-lg border border-gray-500 hover:bg-gray-300 dark:border-slate-900 dark:text-white dark:hover:bg-slate-700">
             {{ option }}
-            <span class="h-3 w-3 ml-1 rounded-full border border-gray-500" [ngClass]="{'bg-red-700 border-red-700 dark:bg-red-600 dark:border-red-600': optionSelected(option)}"></span>
+            <span class="h-3 w-3 ml-1 rounded-full border border-gray-500" [ngClass]="{'bg-red-700 dark:bg-red-600': optionSelected(option)}"></span>
         </div>
     </ng-template>
 
