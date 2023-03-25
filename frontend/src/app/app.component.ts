@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationService } from './notification.service';
 import { ThemeService } from './theme.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   showSidebar = true;
   theme!: string;
 
-  constructor (private themeService: ThemeService) {}
+  constructor (private themeService: ThemeService, public notificationService: NotificationService) {}
 
   ngOnInit() {
     this.theme = this.themeService.getTheme();

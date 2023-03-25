@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { DatasetMetadata } from '../dataset-metadata';
 import { DatasetService } from '../dataset.service';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,7 +16,7 @@ export class SidebarComponent implements OnInit {
   filterMode = "union";
   selectedDataset = ""
 
-  constructor (private dataService: DataService, private datasetService: DatasetService) {}
+  constructor (private dataService: DataService, private datasetService: DatasetService, private notificationService: NotificationService) {}
 
   ngOnInit() {
     this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
@@ -56,6 +57,7 @@ export class SidebarComponent implements OnInit {
   onDelete() {
     this.datasetService.deleteDataset(this.selectedDataset).subscribe(() => {
       this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
+      this.notificationService.pushNotification(`Deleted dataset: ${this.selectedDataset}`, "success")
       this.selectedDataset = "";
       this.onDatasetChange();
     });
