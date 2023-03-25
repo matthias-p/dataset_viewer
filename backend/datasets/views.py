@@ -67,6 +67,7 @@ class DatasetStatistics(views.APIView):
         categories_per_image = defaultdict(int)
         instances_per_category = defaultdict(int)
         normalized_instance_areas = []
+        bbox_centers = np.zeros((100, 100))
 
         for image in images:
             categories = set()
@@ -74,6 +75,11 @@ class DatasetStatistics(views.APIView):
             image_area = image.get("height") * image.get("width")
 
             for annotation in image.get("annotations"):
+                bbox_center_x = int((annotation.get("xtl") + (annotation.get("width") / 2)) / image.get("width") * 100)
+                bbox_center_y = int((annotation.get("ytl") + (annotation.get("height") / 2)) / image.get("height") * 100)
+
+                bbox_centers[bbox_center_y][bbox_center_x] += 1
+
                 categories.add(annotation.get("category"))
                 instances_per_category[str(annotation.get("category"))] += 1
                 normalized_instance_areas.append(annotation.get("area") / image_area)
@@ -90,6 +96,9 @@ class DatasetStatistics(views.APIView):
             "instance_size": {
                 "bins": bins.tolist(),
                 "values": values.tolist()
+            },
+            "bbox_centers": {
+                "z": list(reversed(bbox_centers.tolist()))
             }
         }
 

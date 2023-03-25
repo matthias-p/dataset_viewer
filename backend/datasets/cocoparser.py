@@ -115,7 +115,6 @@ class CocoDataset:
         categories_per_image = defaultdict(int)
         instances_per_category = defaultdict(int)
         normalized_instance_areas = []
-
         bbox_centers = np.zeros((100, 100))
 
         for image in self.images:
