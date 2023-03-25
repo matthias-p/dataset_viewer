@@ -112,26 +112,24 @@ class DatasetIndexes(views.APIView):
         })
     
 
-class ImageDetail(views.APIView):
-    def get(self, request: Request, **kwargs):
-        id = 0
-        if "index" in request.query_params:
-            id = int(request.query_params.get("index"))
-
-        db = client[kwargs.get("ds_name")]
-        image = db["images"].find_one({"_id": id})
-
-        if image:
-            return Response(image)
-        else:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
-        
+class DatasetDetail(views.APIView):
     def delete(self, request, ds_name):
         client.drop_database(ds_name)
         image_dir = settings.BASE_DIR / "images" / ds_name
         shutil.rmtree(str(image_dir))
 
         return Response("ok")
+    
+
+class ImageDetail(views.APIView):
+    def get(self, request: Request, ds_name: str, index: int, **kwargs):
+        db = client[ds_name]
+        image = db["images"].find_one({"_id": index})
+
+        if image:
+            return Response(image)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
         
 
 class ImageData(View):

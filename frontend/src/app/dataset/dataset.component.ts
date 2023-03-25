@@ -34,13 +34,19 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
     this.categoriesSubscription = this.dataService.getCategoryObs().subscribe(
       categories => {
+        if (categories.length == 0 && this.categories.length == 0) {
+          return
+        }
         this.categories = categories.slice();
         this.onChange();
-      }
+        }
     )
 
     this.filterModeSubscription = this.dataService.getFilterModeObs().subscribe(
       filterMode => {
+        if (filterMode === this.filterMode) {
+          return
+        }
         this.filterMode = filterMode;
         this.onChange();
       }

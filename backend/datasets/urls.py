@@ -5,7 +5,8 @@ from . import views
 urlpatterns = [
     path("", views.ListDatasets.as_view()),
     path("upload/", views.DatasetUpload.as_view()),
-    path("<str:ds_name>/", views.ImageDetail.as_view()),
+    path("<str:ds_name>/", views.DatasetDetail.as_view()),
+    path("<str:ds_name>/<int:index>/", views.ImageDetail.as_view()),
     path("<str:ds_name>/indexes/", views.DatasetIndexes.as_view()),
     path("<str:ds_name>/metadata/", views.DatasetMetadata.as_view()),
     path("<str:ds_name>/statistics/", views.DatasetStatistics.as_view()),

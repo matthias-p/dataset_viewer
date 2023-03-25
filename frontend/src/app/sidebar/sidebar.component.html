@@ -16,9 +16,9 @@
     
             <div class="mt-4">
                 <h2 class="text-2xl dark:text-white">Filter</h2>
-                <app-multiselect (selectionChangeEvent)="onCategoryChange($event)" [options]="metadata.categories"
-                    placeholder="Filter categories"></app-multiselect>
-    
+
+                <app-category-filter (changeEvent)="onCategoryChange($event)" [options]="metadata.categories"></app-category-filter>
+                
                 <div class="flex items-center mt-2">
                     <input type="radio" id="union" name="filter_mode" [(ngModel)]="filterMode"
                         (change)="onFilterModeChange()" value="union">
@@ -44,7 +44,7 @@
     </div>
 
     <ng-container *ngIf="metadata">
-        <div class=" w-full">
+        <div class=" w-full mt-4 mb-2">
             <button (click)="onDelete()" class="bg-red-700 hover:bg-red-800 text-white px-2 py-2 rounded w-full dark:bg-red-600 dark:hover:bg-red-700">Delete dataset</button>
         </div>
     </ng-container>

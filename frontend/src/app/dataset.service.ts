@@ -36,7 +36,7 @@ export class DatasetService {
   }
 
   getDatasetImage(datasetName: string, index: number): Observable<DatasetImage> {
-    return this.http.get<DatasetImage>(`${environment.apiUrl}${datasetName}/`, {params: {index: index}});
+    return this.http.get<DatasetImage>(`${environment.apiUrl}${datasetName}/${index}/`);
   }
 
   deleteDataset(datasetName: string) {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MultiselectComponent } from './multiselect.component';
+import { CategoryFilterComponent } from './category-filter.component';
 
-describe('MultiselectComponent', () => {
-  let component: MultiselectComponent;
-  let fixture: ComponentFixture<MultiselectComponent>;
+describe('CategoryFilterComponent', () => {
+  let component: CategoryFilterComponent;
+  let fixture: ComponentFixture<CategoryFilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MultiselectComponent ]
+      declarations: [ CategoryFilterComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MultiselectComponent);
+    fixture = TestBed.createComponent(CategoryFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
