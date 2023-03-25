@@ -5,6 +5,8 @@
     <plotly-plot [data]="getInstancesPerImageData()" className="rounded ring ring-slate-900/5 mt-4" [layout]="instancesPerImageLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
     
     <plotly-plot [data]="getInstanceSizeData()" className="rounded ring ring-slate-900/5 mt-4" [layout]="instanceSizeLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+    <plotly-plot [data]="getBboxCentersData()" className="rounded ring ring-slate-900/5 mt-4" [layout]="bboxCentersLayout" [updateOnlyWithRevision]="true" [revision]="revision"></plotly-plot>
+
     <div class="h-4"></div>
 </ng-container>
 

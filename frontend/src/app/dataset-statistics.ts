@@ -14,5 +14,8 @@ export interface DatasetStatistics {
     instance_size: {
         bins: number[],
         values: number[]
+    },
+    bbox_centers: {
+        z: number[][]
     }
 }

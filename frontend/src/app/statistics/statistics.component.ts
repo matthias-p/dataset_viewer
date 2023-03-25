@@ -5,12 +5,37 @@ import { DatasetStatistics } from '../dataset-statistics';
 import { DatasetService } from '../dataset.service';
 import { ThemeService } from '../theme.service';
 
+interface PlotLayout {
+  title: string,
+  bargap?: number,
+
+  xaxis: {
+    title?: string,
+    categoryorder?: string,
+    tickangle?: number,
+    range?: number[]
+  },
+
+  yaxis: {
+    title: string
+  },
+
+  paper_bgcolor: string,
+  plot_bgcolor: string,
+
+  font: {
+    color: string,
+  }
+}
+
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
+  private layouts: PlotLayout[] = [];
+
   datasetName = "";
   categories: string[] = [];
   filterMode = "union";
@@ -23,7 +48,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   filterModeSubscription!: Subscription;
   themeSubscription!: Subscription;
 
-  instancesPerCategoryLayout = {
+  instancesPerCategoryLayout: PlotLayout = {
     title: "Instances Per Category",
     xaxis: {
       categoryorder: "total descending",
@@ -40,7 +65,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  categoriesPerImageLayout = {
+  categoriesPerImageLayout: PlotLayout = {
     title: "Categories Per Image",
     xaxis: {
       title: "Number of categories"
@@ -56,7 +81,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  instancesPerImageLayout = {
+  instancesPerImageLayout: PlotLayout = {
     title: "Instances Per Image",
     xaxis: {
       title: "Number of instances"
@@ -72,7 +97,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  instanceSizeLayout = {
+  instanceSizeLayout: PlotLayout = {
     title: "Normalized Instance Size",
     bargap: 0,
     xaxis: {
@@ -90,7 +115,29 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private dataService: DataService, private datasetService: DatasetService, private themeService: ThemeService) {}
+  bboxCentersLayout: PlotLayout = {
+    title: "BboxCenters",
+    xaxis: {
+      title: "Image width in %"
+    },
+    yaxis: {
+      title: "Image height in %"
+    },
+    paper_bgcolor: "rgba(0, 0, 0, 0)",
+    plot_bgcolor: "rgba(0, 0, 0, 0)",
+
+    font: {
+      color: "#888"
+    }
+  }
+
+  constructor(private dataService: DataService, private datasetService: DatasetService, private themeService: ThemeService) {
+    this.layouts.push(this.instancesPerCategoryLayout);
+    this.layouts.push(this.categoriesPerImageLayout);
+    this.layouts.push(this.instancesPerImageLayout);
+    this.layouts.push(this.instanceSizeLayout);
+    this.layouts.push(this.bboxCentersLayout);
+  }
 
   ngOnInit() {
     this.datasetNameSubscription = this.dataService.getDatasetNameObs().subscribe(
@@ -141,37 +188,17 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   onThemeChange(theme: string) {
     if (theme === "dark") {
-      this.instancesPerCategoryLayout.font.color = "#FFF"
-      this.instancesPerCategoryLayout.plot_bgcolor = "rgba(0,0,0,0)"
-      this.instancesPerCategoryLayout.paper_bgcolor = "rgba(0,0,0,0)"
-
-      this.categoriesPerImageLayout.font.color = "#FFF"
-      this.categoriesPerImageLayout.plot_bgcolor = "rgba(0,0,0,0)"
-      this.categoriesPerImageLayout.paper_bgcolor = "rgba(0,0,0,0)"
-
-      this.instancesPerImageLayout.font.color = "#FFF"
-      this.instancesPerImageLayout.plot_bgcolor = "rgba(0,0,0,0)"
-      this.instancesPerImageLayout.paper_bgcolor = "rgba(0,0,0,0)"
-
-      this.instanceSizeLayout.font.color = "#FFF"
-      this.instanceSizeLayout.plot_bgcolor = "rgba(0,0,0,0)"
-      this.instanceSizeLayout.paper_bgcolor = "rgba(0,0,0,0)"
+      this.layouts.forEach(layout => {
+        layout.font.color = "#FFF";
+        layout.plot_bgcolor = "rgba(0,0,0,0)";
+        layout.paper_bgcolor = "rgba(0,0,0,0)";
+      });
     } else {
-      this.instancesPerCategoryLayout.font.color = "#000"
-      this.instancesPerCategoryLayout.plot_bgcolor = "#FFF"
-      this.instancesPerCategoryLayout.paper_bgcolor = "#FFF"
-
-      this.categoriesPerImageLayout.font.color = "#000"
-      this.categoriesPerImageLayout.plot_bgcolor = "#FFF"
-      this.categoriesPerImageLayout.paper_bgcolor = "#FFF"
-
-      this.instancesPerImageLayout.font.color = "#000"
-      this.instancesPerImageLayout.plot_bgcolor = "#FFF"
-      this.instancesPerImageLayout.paper_bgcolor = "#FFF"
-
-      this.instanceSizeLayout.font.color = "#000"
-      this.instanceSizeLayout.plot_bgcolor = "#FFF"
-      this.instanceSizeLayout.paper_bgcolor = "#FFF"
+      this.layouts.forEach(layout => {
+        layout.font.color = "#000";
+        layout.plot_bgcolor = "#FFF";
+        layout.paper_bgcolor = "#FFF";
+      });
     }
     
     this.revision++;
@@ -222,6 +249,12 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
     return [{
       x: categories, y: values, type: "bar",
+    }]
+  }
+
+  getBboxCentersData() {
+    return [{
+      z: this.statistics?.bbox_centers.z, type: "heatmap"
     }]
   }
 }

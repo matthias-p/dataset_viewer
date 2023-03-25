@@ -116,12 +116,19 @@ class CocoDataset:
         instances_per_category = defaultdict(int)
         normalized_instance_areas = []
 
+        bbox_centers = np.zeros((100, 100))
+
         for image in self.images:
             categories = set()
             instances_per_image[str(len(image.annotations))] += 1
             image_area = image.height * image.width
 
             for annotation in image.annotations:
+                bbox_center_x = int((annotation.xtl + (annotation.width / 2)) / image.width * 100)
+                bbox_center_y = int((annotation.ytl + (annotation.height / 2)) / image.height * 100)
+
+                bbox_centers[bbox_center_y][bbox_center_x] += 1
+
                 categories.add(annotation.category.name)
                 instances_per_category[str(annotation.category.name)] += 1
                 normalized_instance_areas.append(annotation.area / image_area)
@@ -138,6 +145,9 @@ class CocoDataset:
             "instance_size": {
                 "bins": bins.tolist(),
                 "values": values.tolist()
+            },
+            "bbox_centers": {
+                "z": list(reversed(bbox_centers.tolist()))
             }
         }
 
