@@ -148,3 +148,29 @@ class ImageData(View):
             return FileResponse(open(image_path, "rb"))
         else:
             return HttpResponseNotFound()
+        
+
+class ImageUpload(views.APIView):
+    serializer_class = serializers.ImageUploadSerializer
+
+    def post(self, request: Request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response("valid" ,status=status.HTTP_201_CREATED)
+        
+        return Response("invalid" ,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class AnnotationsUpload(views.APIView):
+    serializer_class = serializers.AnnotationUploadSerializer
+
+    def post(self, request: Request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response("valid" ,status=status.HTTP_201_CREATED)
+        
+        return Response("invalid" ,status=status.HTTP_400_BAD_REQUEST)

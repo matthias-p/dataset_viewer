@@ -87,3 +87,28 @@ class UploadSerializer(serializers.Serializer):
         # zipfile = ZipFile(file)
         # t = Thread(target=handleUploadedData, args=[zipfile])
         # t.start()
+
+
+class ImageUploadSerializer(serializers.Serializer):
+    dataset_name = serializers.CharField()
+    images = serializers.FileField()
+
+    def save(self, **kwargs):
+        dataset_name = self.validated_data["dataset_name"]
+        file: UploadedFile = self.validated_data["images"]
+
+        extract_to: Path = settings.BASE_DIR / "images" / dataset_name
+
+        with ZipFile(file) as zip:
+            zip.extractall(str(extract_to))
+
+
+class AnnotationUploadSerializer(serializers.Serializer):
+    dataset_name = serializers.CharField()
+    annotations = serializers.FileField()
+
+    def save(self, **kwargs):
+        dataset_name = self.validated_data["dataset_name"]
+        file: UploadedFile = self.validated_data["annotations"]
+
+        parser = cocoparser.CocoDataset(file)

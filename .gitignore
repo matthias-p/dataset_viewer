@@ -161,3 +161,4 @@ cython_debug/
 
 images/
 dataset_parser/
+1_test_scripts/
