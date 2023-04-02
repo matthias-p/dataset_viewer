@@ -62,14 +62,22 @@ class DatasetDetail(views.APIView):
 
 class ImageDetail(views.APIView):
     def get(self, request: Request, ds_name, image_name):
-        if "annotation_files" not in request.query_params:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
         db = mongo[ds_name]
-
-        images = [db[file].find_one({"_id": image_name}) for file in request.query_params.getlist("annotation_files")]
+        images = db["images"].find_one({"_id": image_name})
         return Response(images)
     
+
+class AnnotationDetail(views.APIView):
+    def get(self, request, ds_name, image_name):
+        db = mongo[ds_name]
+
+        annotations = []
+        for file in request.query_params.getlist("annotation_files"):
+            ann = db[file].find_one({"_id": image_name}, {"_id": 0})
+            ann["source"] = file
+            annotations.append(ann)
+        return Response(annotations)
+
 
 class ImageData(View):
     def get(self, request, ds_name, image_name):

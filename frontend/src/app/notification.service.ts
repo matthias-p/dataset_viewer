@@ -37,6 +37,6 @@ export class NotificationService {
 
     setTimeout(() => {
       this.notifications.splice(this.notifications.indexOf(notification), 1);
-    }, 5000);
+    }, 15000);
   }
 }

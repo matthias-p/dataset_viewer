@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
-import { DatasetMetadata } from '../dataset-metadata';
 import { DatasetService } from '../dataset.service';
 import { NotificationService } from '../notification.service';
+import { AnnotationFile, Dataset } from '../dataset';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,32 +10,40 @@ import { NotificationService } from '../notification.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  metadata: DatasetMetadata | null = null;
-  datasetNames: string[] = [];
-  filteredCategories: string[] = [];
+  datasets: Dataset[] = [];
+  // filteredCategories: string[] = [];
   filterMode = "union";
-  selectedDataset = ""
+  selectedDataset: Dataset | null = null;
+  selectedAnnotations: AnnotationFile[] = []
+
+  categoryUnion: string[] = [];
 
   constructor (private dataService: DataService, private datasetService: DatasetService, private notificationService: NotificationService) {}
 
   ngOnInit() {
-    this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
+    this.datasetService.getDatasetList().subscribe(datasets => this.datasets = datasets)
   }
 
   onDatasetChange() {
-    this.dataService.setDataset(this.selectedDataset);
-    this.dataService.setCategories([]);
-    this.dataService.setFilterMode("union");
-    this.dataService.setDrawBboxObs(false);
-    this.dataService.setDrawSegmentationObs(false);
-
     if (this.selectedDataset) {
-      this.datasetService.getDatasetMetadata(this.selectedDataset).subscribe(
-        metadata => this.metadata = metadata
-      );
-    } else {
-      this.metadata = null;
+      this.dataService.setDataset(this.selectedDataset.dataset);
+      this.dataService.setAnnotationFiles([]);
+      this.dataService.setCategories([]);
+      this.dataService.setFilterMode("union");
+      this.dataService.setDrawBboxObs(false);
+      this.dataService.setDrawSegmentationObs(false);
     }
+  }
+
+  onAnnotationsFileChange() {
+    this.dataService.setAnnotationFiles(this.selectedAnnotations);
+
+    let allCategories: string[] = [];
+    this.selectedAnnotations.forEach(annotation => {
+      allCategories = allCategories.concat(annotation.categories);
+    });
+    
+    this.categoryUnion = Array.from(new Set(allCategories));
   }
 
   toggleBbox(value: boolean) {
@@ -54,12 +62,26 @@ export class SidebarComponent implements OnInit {
     this.dataService.setFilterMode(this.filterMode);
   }
 
-  onDelete() {
-    this.datasetService.deleteDataset(this.selectedDataset).subscribe(() => {
-      this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
-      this.notificationService.pushNotification(`Deleted dataset: ${this.selectedDataset}`, "success")
-      this.selectedDataset = "";
-      this.onDatasetChange();
-    });
+  annotationSelected(annotation: AnnotationFile) {
+    return this.selectedAnnotations.includes(annotation);
   }
+
+  onAnnotationClick(annotation: AnnotationFile) {
+    if (this.annotationSelected(annotation)) {
+      this.selectedAnnotations.splice(this.selectedAnnotations.indexOf(annotation), 1);
+    } else {
+      this.selectedAnnotations.push(annotation);
+    }
+
+    this.onAnnotationsFileChange();
+  }
+
+  // onDelete() {
+  //   this.datasetService.deleteDataset(this.selectedDataset).subscribe(() => {
+  //     // this.datasetService.getDatasetList().subscribe(names => this.datasetNames = names.datasets);
+  //     this.notificationService.pushNotification(`Deleted dataset: ${this.selectedDataset}`, "success")
+  //     this.selectedDataset = "";
+  //     this.onDatasetChange();
+  //   });
+  // }
 }

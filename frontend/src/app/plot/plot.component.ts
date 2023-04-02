@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
-import { DatasetImage } from '../dataset-image';
 import { PlotlyConfig, PlotlyData, PlotlyLayout } from '../plotly-graph';
 import { environment } from 'src/environments/environment';
+import { DatasetAnnotation, DatasetImage } from '../dataset';
 
 @Component({
   selector: 'app-plot',
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PlotComponent implements OnInit, OnChanges {
   @Input() datasetImage!: DatasetImage;
+  @Input() datasetAnnotations!: DatasetAnnotation[];
   @Input() datasetName!: string;
   showBoundingBoxes!: boolean;
   showSegmentations!: boolean;
@@ -90,7 +91,7 @@ export class PlotComponent implements OnInit, OnChanges {
     this.layout.images[0].sizex = this.datasetImage.width;
     this.layout.images[0].y = this.datasetImage.height;
     this.layout.images[0].sizey = this.datasetImage.height;
-    this.layout.images[0].source = `${environment.apiUrl}${this.datasetName}/images/${this.datasetImage!.name}/`;
+    this.layout.images[0].source = `${environment.apiUrl}${this.datasetName}/${this.datasetImage._id}/data/`;
 
     this.data = [];
 
@@ -104,48 +105,52 @@ export class PlotComponent implements OnInit, OnChanges {
     });
 
     if (this.showBoundingBoxes) {
-      this.datasetImage.annotations.forEach(annotation => {
-        const y = this.datasetImage!.height - annotation.ytl;
-        this.data.push({
-          x: [annotation.xtl, annotation.xtl + annotation.width, annotation.xtl + annotation.width, annotation.xtl, annotation.xtl],
-          y: [y, y, y - annotation.height, y - annotation.height, y],
-          type: "scatter", 
-          mode: "lines", 
-          marker: {opacity: 1}, 
-          name: annotation.category, 
-          fill: "toself", 
-          hoveron: "points",
-          hoverinfo: "name"
-        });
-      });
+      this.datasetAnnotations.forEach(datasetAnnotation => {
+        datasetAnnotation.annotations.forEach(annotation => {
+          const y = this.datasetImage.height - annotation.ytl;
+          this.data.push({
+            x: [annotation.xtl, annotation.xtl + annotation.width, annotation.xtl + annotation.width, annotation.xtl, annotation.xtl],
+            y: [y, y, y - annotation.height, y - annotation.height, y],
+            type: "scatter", 
+            mode: "lines", 
+            marker: {opacity: 1}, 
+            name: `${annotation.category}:${datasetAnnotation.source}`, 
+            fill: "toself", 
+            hoveron: "points",
+            hoverinfo: "name"
+          });
+        })
+      })
     }
 
     if (this.showSegmentations) {
-      this.datasetImage.annotations.forEach(annotation => {
-        if (annotation.iscrowd === 0) {
-          annotation.segmentation.forEach(segmentation => {
-            const polygons: number[] = segmentation;
-            const x: number[] = [];
-            const y: number[] = [];
-  
-            for (let index = 0; index < polygons.length / 2; index++) {
-              x.push(polygons[2 * index]);
-              y.push(this.datasetImage.height - polygons[2 * index + 1]);
-            }
-      
-            this.data.push({
-              x: x,
-              y: y,
-              type: "scatter", 
-              mode: "lines", 
-              marker: {opacity: 1}, 
-              name: annotation.category, 
-              fill: "toself", 
-              hoveron: "points",
-              hoverinfo: "name"
+      this.datasetAnnotations.forEach(datasetAnnotation => {
+        datasetAnnotation.annotations.forEach(annotation => {
+          if (annotation.iscrowd === 0) {
+            annotation.segmentation.forEach(segmentation => {
+              const polygons: number[] = segmentation;
+              const x: number[] = [];
+              const y: number[] = [];
+    
+              for (let index = 0; index < polygons.length / 2; index++) {
+                x.push(polygons[2 * index]);
+                y.push(this.datasetImage.height - polygons[2 * index + 1]);
+              }
+        
+              this.data.push({
+                x: x,
+                y: y,
+                type: "scatter", 
+                mode: "lines", 
+                marker: {opacity: 1}, 
+                name: `${annotation.category}:${datasetAnnotation.source}`, 
+                fill: "toself", 
+                hoveron: "points",
+                hoverinfo: "name"
+              });
             });
-          });
-        }
+          }
+        })
       })
     }
   }

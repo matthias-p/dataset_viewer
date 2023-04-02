@@ -107,6 +107,15 @@ class CocoDataset:
     def export_images(self) -> list[dict]:
         return [image.to_json() for image in self.images]
     
+    def export_image_annotations(self):
+        exports = []
+        for image in self.images:
+            exports.append({
+                "_id": image.filename,
+                "annotations": [ann.to_json() for ann in image.annotations]
+            })
+        return exports
+    
     def export_statistics(self):
         instances_per_image = defaultdict(int)
         categories_per_image = defaultdict(int)

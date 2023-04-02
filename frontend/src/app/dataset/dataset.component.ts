@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from '../data.service';
-import { DatasetImage } from '../dataset-image';
 import { DatasetService } from '../dataset.service';
+import { AnnotationFile, DatasetAnnotation, DatasetImage } from '../dataset';
 
 @Component({
   selector: 'app-dataset',
@@ -11,14 +11,17 @@ import { DatasetService } from '../dataset.service';
 })
 export class DatasetComponent implements OnInit, OnDestroy {
   datasetName = "";
+  annotationFileNames: string[] = []
   categories: string[] = [];
   filterMode = "union";
 
-  datasetIndexes: number[] = []
+  datasetIds: string[] = [];
   currentIndex = 1;
-  datasetImage!: DatasetImage | null;
+  selectedImage: DatasetImage | null = null;
+  currentAnnotations: DatasetAnnotation[] = []
 
   datasetNameSubscription!: Subscription;
+  annotationFilesSubscription!: Subscription;
   categoriesSubscription!: Subscription;
   filterModeSubscription!: Subscription;
 
@@ -29,6 +32,16 @@ export class DatasetComponent implements OnInit, OnDestroy {
       datasetName => {
         this.datasetName = datasetName;
         this.onChange();
+      }
+    )
+
+    this.annotationFilesSubscription = this.dataService.getAnnotationFilesObs().subscribe(
+      annotationFiles => {
+        if (annotationFiles.length == 0 && this.annotationFileNames.length == 0) {
+          return;
+        }
+        this.annotationFileNames = annotationFiles.slice();
+        this.getCurrentAnnotations();
       }
     )
 
@@ -57,43 +70,57 @@ export class DatasetComponent implements OnInit, OnDestroy {
     this.datasetNameSubscription.unsubscribe();
     this.categoriesSubscription.unsubscribe();
     this.filterModeSubscription.unsubscribe();
+    this.annotationFilesSubscription.unsubscribe();
   }
 
   onChange() {
     if(this.datasetName) {
-      this.datasetService.getDatasetIndexes(this.datasetName, this.categories, this.filterMode).subscribe(
-        indexes => {
+      this.datasetService.getDatasetIds(this.datasetName, this.annotationFileNames, this.categories, this.filterMode).subscribe(
+        ids => {
           this.currentIndex = 1;
-          this.datasetIndexes = indexes.indexes;
-          if (this.datasetIndexes.length) {
+          this.datasetIds = ids.ids
+          if (this.datasetIds.length) {
             this.getCurrentImage();
+            this.getCurrentAnnotations();
           }
         }
       )
     } else {
-      this.datasetImage = null;
+      this.selectedImage = null;
     }
   }
 
   onNextClick() {
-    if (this.currentIndex < this.datasetIndexes.length) {
+    if (this.currentIndex < this.datasetIds.length) {
       ++this.currentIndex;
       this.getCurrentImage();
+      this.getCurrentAnnotations();
     }
   }
 
   onPrevClick() {
     if (this.currentIndex > 1) {
       --this.currentIndex;
-      this.getCurrentImage();    
+      this.getCurrentImage();
+      this.getCurrentAnnotations();
     }
   }
 
   getCurrentImage() {
-    this.datasetService.getDatasetImage(this.datasetName, this.datasetIndexes[this.currentIndex - 1]).subscribe({
-      next: image => {
-        this.datasetImage = image;
+    this.datasetService.getDatasetImage(this.datasetName, this.datasetIds[this.currentIndex - 1]).subscribe(
+      datasetImage => {
+        this.selectedImage = datasetImage;
       }
-    });
+    );
+  }
+
+  getCurrentAnnotations() {
+    if (this.annotationFileNames.length != 0) {
+      this.datasetService.getDatasetAnnotations(this.datasetName, this.datasetIds[this.currentIndex - 1], this.annotationFileNames).subscribe(
+        datasetAnnotations => {
+          this.currentAnnotations = datasetAnnotations;
+        }
+      )
+    }
   }
 }
