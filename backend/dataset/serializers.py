@@ -24,6 +24,10 @@ class ImageUploadSerializer(serializers.Serializer):
         r = redis.Redis(host="redis", port=6379)
         r.sadd("datasets", dataset_name)
 
+        ids = [file.name for file in sorted(extract_to.iterdir())]
+
+        r.sadd(f"{dataset_name}:ids", *ids)
+
 
 class AnnotationUploadSerializer(serializers.Serializer):
     annotations = serializers.FileField()
@@ -35,6 +39,7 @@ class AnnotationUploadSerializer(serializers.Serializer):
         parser = cocoparser.CocoDataset(file)
 
         client = MongoClient("mongo", 27017, username="mongoadmin", password="secret")
+        client.drop_database(dataset_name)
         db = client[dataset_name]
         db[annotation_file].insert_many(parser.export_images())
         db[f"{annotation_file}_metadata"].insert_one(parser.export_metadata())
@@ -42,3 +47,4 @@ class AnnotationUploadSerializer(serializers.Serializer):
 
         r = redis.Redis(host="redis", port=6379)
         r.sadd(f"{dataset_name}:annotations", annotation_file)
+        r.sadd(f"{dataset_name}:{annotation_file}:categories", *parser.export_metadata().get("categories"))
